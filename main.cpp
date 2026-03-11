@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cmath>
 #include <cstdlib>
+#include <ctime>
 
 struct DotCross { double dot, cross; };
 struct Vec2 {
@@ -18,8 +19,9 @@ Vec2 bezier(double t, Vec2 p0, Vec2 p1, Vec2 p2, Vec2 p3) {
 }
 
 Vec2 generateQPoint(){
-    double randomCoordonates_x = rand() % 201;
-    double randomCoordonates_y = rand() % 201;
+    std::srand(std::time({}));
+    double randomCoordonates_x = std::rand() % 201;
+    double randomCoordonates_y = std::rand() % 201;
 
     Vec2 q = {randomCoordonates_x, randomCoordonates_y};
     return q;
@@ -100,7 +102,7 @@ int main() {
     // ════════════════════════════════════════════
 
     std::ofstream f("bezier.csv");
-    f << "x,y,dot,cross,angleDeg,t\n";
+    f << "x,y,dot,cross,angleDeg,t,qx,qy,bestCoordonatesx,bestCoordonatesy\n";
 
     int nbPoints = 1000;
     double dt = 1.0 / nbPoints;
@@ -133,7 +135,7 @@ int main() {
             bestCoordonates = {p.x, p.y};
         }
 
-        f << p.x << "," << p.y << "," << dot << "," << cross << "," << angleDeg << "," << i << "\n";
+        f << p.x << "," << p.y << "," << dot << "," << cross << "," << angleDeg << "," << i << "," << q.x << "," << q.y << "," << bestCoordonates.x << "," << bestCoordonates.y << "\n";
     }
 
     std::cout << "===================== Coordonnés Newton-Raphson ======================="<< "\n";
